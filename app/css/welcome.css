@@ -1,30 +1,61 @@
+/**
+ * Stretchly Welcome Window Styles
+ * Apple Liquid Glass Design System
+ *
+ * Welcome window is the first-time user experience.
+ * Clean, centered layout with glass panel effect.
+ */
+
+/* ========================================
+   WELCOME LAYOUT
+   ======================================== */
+
 body > div > :last-child {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-xl);
 }
+
+/* ========================================
+   WELCOME CONTAINER
+   Centered card layout
+   ======================================== */
 
 .welcome {
   display: grid;
-  font-size: 13px;
-  grid-gap: 16px 0;
-  grid-template: auto auto/ 4% auto 4%;
-  letter-spacing: 0px;
-  padding-top: 30px;
+  font-size: var(--text-body);
+  grid-gap: var(--space-md) 0;
+  grid-template: auto auto / 4% auto 4%;
+  letter-spacing: 0;
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
   text-align: center;
+  /* Glass background */
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
 }
 
 .welcome > div {
   grid-column: 2/-2;
 }
 
+/* ========================================
+   HEADER SECTION
+   Logo and title
+   ======================================== */
+
 .welcome > :nth-child(1) {
   display: flex;
   flex-direction: column;
-  margin-bottom: 60px;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
 }
 
 .welcome > :nth-child(1) > div {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .welcome > :nth-child(1) > div > img {
@@ -33,37 +64,83 @@ body > div > :last-child {
 }
 
 .welcome > :nth-child(1) > div > span {
-  font-size: 48px;
-  padding-left: 12px;
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: var(--weight-light);
+  letter-spacing: -0.02em;
 }
 
 body[dir=rtl] .welcome > :nth-child(1) > div > span {
   padding-left: 0;
-  padding-right: 12px;
+  padding-right: var(--space-sm);
 }
 
 .welcome > :nth-child(1) > span {
-  font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
-    'Noto Sans CJK KR Light',
-    'Noto Sans Devanagari Light',
-    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
-    'Noto Sans JP Light', 'Noto Sans Hebrew Light';
-  font-size: 20px;
-  line-height: 30px;
+  font-family: var(--font-body);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-light);
+  line-height: 1.4;
+  color: var(--text-secondary);
 }
+
+/* ========================================
+   LANGUAGE SELECTOR
+   Large list for easy selection
+   ======================================== */
+
+.welcome > :nth-child(2) {
+  display: flex;
+  justify-content: center;
+}
+
+.welcome select {
+  min-height: 50vh;
+  max-height: 60vh;
+  width: 70%;
+  max-width: 400px;
+  padding: var(--space-sm);
+  text-align: center;
+  font-size: var(--text-body);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+.welcome select option {
+  padding: var(--space-xs);
+  text-align: center;
+  font-size: var(--text-body);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.welcome select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+/* ========================================
+   BUTTONS SECTION
+   Tutorial, preferences, get started
+   ======================================== */
 
 .welcome > :last-child {
   display: flex;
-  margin-top: 26px;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
 }
 
 .welcome > :last-child > :last-child {
-  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
-body[dir=rtl] .welcome > :last-child > :last-child {
-  margin-left: 0;
-  margin-right: auto;
+.welcome button {
+  min-width: 160px;
 }
 
 .welcome input[type="radio"] + label:before,
@@ -72,9 +149,45 @@ body[dir=rtl] .welcome input[type="radio"] + label:before {
   margin: 0 auto;
 }
 
-select {
-  min-height: 50vh;
-  padding-left: 8px;
-  text-align: center;
-  width: 70%;
+/* ========================================
+   ANIMATION
+   Smooth entrance
+   ======================================== */
+
+@keyframes welcomeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome {
+  animation: welcomeEnter var(--duration-medium) var(--ease-enter);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 600px) {
+  .welcome {
+    grid-template: auto auto / var(--space-md) auto var(--space-md);
+  }
+
+  .welcome > :nth-child(1) > div > span {
+    font-size: var(--text-h1);
+  }
+
+  .welcome select {
+    width: 90%;
+    min-height: 40vh;
+  }
+
+  .welcome button {
+    min-width: 120px;
+  }
 }

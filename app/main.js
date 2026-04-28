@@ -574,7 +574,10 @@ function createWelcomeWindow (isAppStart = true) {
       show: false,
       autoHideMenuBar: true,
       icon: windowIconPath(),
-      backgroundColor: 'EDEDED',
+      // Apple Liquid Glass - vibrancy for macOS
+      vibrancy: process.platform === 'darwin' ? 'under-window' : undefined,
+      visualEffectState: process.platform === 'darwin' ? 'active' : undefined,
+      backgroundColor: process.platform === 'darwin' ? undefined : '#EDEDED',
       webPreferences: {
         preload: join(__dirname, './welcome-preload.mjs'),
         sandbox: false
@@ -604,7 +607,10 @@ function createContributorSettingsWindow () {
     show: false,
     autoHideMenuBar: true,
     icon: windowIconPath(),
-    backgroundColor: 'EDEDED',
+    // Apple Liquid Glass - vibrancy for macOS
+    vibrancy: process.platform === 'darwin' ? 'sidebar' : undefined,
+    visualEffectState: process.platform === 'darwin' ? 'active' : undefined,
+    backgroundColor: process.platform === 'darwin' ? undefined : '#EDEDED',
     webPreferences: {
       preload: join(__dirname, './contributor-preferences-preload.mjs'),
       sandbox: false
@@ -689,17 +695,17 @@ function startBreakNotification () {
 }
 
 function getBlurredBackgroundWindowOptions () {
-  if (!settings.get('blurredBackground')) {
-    return {}
-  }
-
+  // Apple Liquid Glass - always enable vibrancy on macOS for immersive break
   switch (process.platform) {
     case 'darwin':
       return {
-        vibrancy: 'hud',
+        vibrancy: 'under-window', // More immersive than 'hud'
         visualEffectState: 'active'
       }
     default:
+      if (!settings.get('blurredBackground')) {
+        return {}
+      }
       return {}
   }
 }
@@ -1241,7 +1247,10 @@ function createPreferencesWindow () {
     maxHeight: Math.round(maxHeight),
     x: displayManager.getDisplayX(-1, 600),
     y: displayManager.getDisplayY(-1, 530),
-    backgroundColor: '#EDEDED',
+    // Apple Liquid Glass - vibrancy for macOS
+    vibrancy: process.platform === 'darwin' ? 'sidebar' : undefined,
+    visualEffectState: process.platform === 'darwin' ? 'active' : undefined,
+    backgroundColor: process.platform === 'darwin' ? undefined : '#EDEDED',
     webPreferences: {
       preload: join(__dirname, './preferences-preload.mjs'),
       sandbox: false

@@ -1,32 +1,57 @@
+/**
+ * Stretchly Break Window Styles
+ * Apple Liquid Glass Design System
+ *
+ * Break windows are immersive fullscreen overlays with glass effect.
+ * Users see this during their break - it should feel calming and native.
+ */
+
+/* ========================================
+   BREAK WINDOW CONTAINER
+   Immersive glass panel
+   ======================================== */
+
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
-  overflow: hidden;
+  /* Glass background is applied via Electron vibrancy + CSS fallback */
+  background: transparent;
 }
+
+/* Break health mode visual feedback */
+body.break-health-mode {
+  box-shadow: var(--break-health-shadow, none);
+  transition: box-shadow 450ms var(--ease-enter);
+}
+
+/* ========================================
+   MAIN BREAKS CONTAINER
+   Centered content on glass panel
+   ======================================== */
 
 .breaks {
   align-items: center;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffffff;
   display: grid;
-  font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
-    'Noto Sans CJK KR Light',
-    'Noto Sans Devanagari Light',
-    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
-    'Noto Sans Hebrew Light';
-  font-weight: 300;
   grid-template: 85vh 10vh / 100px auto 100px;
   justify-items: center;
   min-height: 100%;
+  padding: var(--space-2xl);
+  /* Glass effect */
+  background: var(--glass-bg);
+  backdrop-filter: blur(60px) saturate(200%);
+  -webkit-backdrop-filter: blur(60px) saturate(200%);
 }
 
-body.break-health-mode {
-  box-shadow: var(--break-health-shadow, none);
-  transition: box-shadow 450ms ease-out;
-}
+/* ========================================
+   TYPOPOGRAPHY
+   Large, readable break content
+   ======================================== */
 
 .breaks > * {
   grid-column: 2 / span 1;
@@ -34,94 +59,245 @@ body.break-health-mode {
 
 .breaks > :nth-child(1) {
   text-align: center;
+  max-width: 80vw;
 }
+
+/* Microbreak idea - larger for mini breaks */
+.breaks > :nth-child(1) > .microbreak-idea {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: var(--weight-light);
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  margin-bottom: var(--space-lg);
+}
+
+/* Long break idea - slightly larger */
+.breaks > :nth-child(1) > .break-idea {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: var(--weight-light);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: var(--space-lg);
+}
+
+/* Break text - supporting content */
+.breaks > :nth-child(1) > .break-text {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: var(--weight-regular);
+  line-height: 1.5;
+  margin-top: var(--space-xl);
+  opacity: 0.9;
+}
+
+/* ========================================
+   PROGRESS BAR
+   Apple-style progress indicator
+   ======================================== */
 
 .breaks > :nth-child(1) > progress {
-  margin-top: 50px;
+  margin-top: var(--space-xl);
+  height: 4px;
+  width: min(40vw, 300px);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  overflow: hidden;
 }
 
-.breaks > :nth-child(1) >  .microbreak-idea {
-  font-size: 30px;
-  letter-spacing: 0.44px;
-  line-height: 46px;
+.breaks > :nth-child(1) > progress::-webkit-progress-bar {
+  background: transparent;
+  border: none;
 }
 
-.breaks > :nth-child(1) >  .break-idea {
-  font-size: 36px;
-  letter-spacing: 0.52px;
-  line-height: 49px;
+.breaks > :nth-child(1) > progress::-webkit-progress-value {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-full);
+  transition: width 200ms linear;
 }
 
-.breaks > :nth-child(1) >  .break-text {
-  font-size: 24px;
-  letter-spacing: 0.35px;
-  line-height: 33px;
-  margin-top: 60px;
+#progress-time {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  margin-top: var(--space-sm);
+  opacity: 0.8;
 }
+
+/* ========================================
+   ACTION BUTTONS
+   Postpone, skip, finish
+   ======================================== */
 
 .breaks > :nth-child(2) {
-  font-size: 18px;
-  letter-spacing: 0.26px;
-  line-height: 18px;
+  display: flex;
+  gap: var(--space-lg);
+  font-size: var(--text-body);
+  letter-spacing: 0;
+}
+
+.breaks > :nth-child(2) > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transition: all var(--duration-micro) var(--ease-enter);
+  cursor: pointer;
+}
+
+.breaks > :nth-child(2) > a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.breaks > :nth-child(2) > a:active {
+  transform: scale(0.98);
+}
+
+/* Icon styling */
+.breaks > :nth-child(2) > a img {
+  /* Lighten icon to white */
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+  height: 18px;
+  width: 18px;
+  opacity: 0.9;
+}
+
+body[dir=rtl] .breaks > :nth-child(2) > a img {
+  padding-left: 0;
+  padding-right: var(--space-xs);
+}
+
+.breaks > :nth-child(2) > a:hover img {
+  opacity: 1;
+}
+
+/* ========================================
+   TOOLTIPS IN BREAK
+   ======================================== */
+
+.breaks > :nth-child(2) .tiptext {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-small);
 }
 
 .breaks > :nth-child(2) > a:hover {
   color: #FFFF00;
 }
 
-.breaks > :nth-child(2) > a img {
-  /* https://codepen.io/sosuke/pen/Pjoqqp */
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
-  height: 20px;
-  padding-left: 20px;
-  width: 20px;
-}
-
-body[dir=rtl] .breaks > :nth-child(2) > a img {
-  padding-left: 0;
-  padding-right: 20px;
-}
-
-.breaks > :nth-child(2) > a:hover img {
-  filter: invert(87%) sepia(71%) saturate(3206%) hue-rotate(359deg) brightness(101%) contrast(103%);
-}
-
-#progress-time {
-  display: block;
-  font-size: 15px;
-  padding-top: 20px;
-}
+/* ========================================
+   LIGHT MODE VARIANT (ffffff class)
+   For custom colors that need dark text
+   ======================================== */
 
 .ffffff .breaks {
-  color: #000000;
-}
-.ffffff .breaks > :nth-child(2) > a:hover {
-  color: #ffffff;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.85);
 }
 
-.ffffff .breaks > :nth-child(2) > a:hover img,
-.ffffff .breaks > :nth-child(2) > a:hover {
-  color: #000000;
+.ffffff .breaks > :nth-child(1) > progress {
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.ffffff .breaks > :nth-child(2) .tiptext,
-.ffffff .breaks > :nth-child(2) .tiptext  {
-  color: #000000;
-  background-color: #ffffff;
-  border: 1px solid #000000;
+.ffffff .breaks > :nth-child(1) > progress::-webkit-progress-value {
+  background: var(--primary);
+}
+
+.ffffff .breaks > :nth-child(2) > a {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.ffffff .breaks > :nth-child(2) > a:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #1d1d1f;
 }
 
 .ffffff .breaks > :nth-child(2) > a img {
-  filter: hue-rotate(288deg) brightness(102%) contrast(102%);
+  filter: none;
+  opacity: 0.7;
 }
 
 .ffffff .breaks > :nth-child(2) > a:hover img {
-  filter: hue-rotate(359deg) brightness(101%) contrast(103%);
+  opacity: 1;
 }
 
+.ffffff .breaks > :nth-child(2) > a:hover {
+  color: var(--primary);
+}
+
+.ffffff .breaks > :nth-child(2) .tiptext {
+  color: #1d1d1f;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ========================================
+   TIME DISPLAY (BOTTOM RIGHT)
+   Current time during break
+   ======================================== */
+
 .breaks > :last-child {
-  bottom: 12px;
-  font-size: 28px;
+  bottom: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: var(--weight-regular);
   position: absolute;
-  right: 12px;
+  right: var(--space-md);
+  opacity: 0.6;
+}
+
+/* ========================================
+   ANIMATIONS
+   Smooth entrance for break window
+   ======================================== */
+
+@keyframes breakEnter {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px) saturate(100%);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(60px) saturate(200%);
+  }
+}
+
+.breaks {
+  animation: breakEnter var(--duration-long) var(--ease-enter);
+}
+
+/* ========================================
+   REDUCED MOTION
+   Respect user preferences
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .breaks {
+    animation: none;
+    backdrop-filter: blur(60px) saturate(200%);
+  }
+
+  .breaks > :nth-child(2) > a {
+    transition: none;
+  }
+
+  .breaks > :nth-child(2) > a:hover {
+    transform: none;
+  }
 }
